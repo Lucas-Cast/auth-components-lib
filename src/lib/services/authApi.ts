@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { signinParams } from "../types/authTypes";
+import { type signupParams, type signinParams } from "../types/authTypes";
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -15,9 +15,15 @@ export const authApi = createApi({
       transformResponse: (response) => JSON.stringify(response),
       transformErrorResponse: (error) => error.data,
     }),
+    postSignup: builder.mutation<string, signupParams>({
+      query: ({ name, email, password }) => ({
+        url: "/signup",
+        method: "POST",
+        body: { name, email, password },
+      }),
+      transformErrorResponse: (error) => error.data,
+    }),
   }),
 });
 
-// Export hooks for usage in function components, which are
-// auto-generated based on the defined endpoints
-export const { usePostSigninMutation } = authApi;
+export const { usePostSigninMutation, usePostSignupMutation } = authApi;
