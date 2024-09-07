@@ -15,6 +15,7 @@ import { useEffect } from "react";
 
 export function SignupForm() {
   const [postSignup, { data, error }] = usePostSignupMutation();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -23,6 +24,8 @@ export function SignupForm() {
       email: data.get("email") as string,
       password: data.get("password") as string,
     });
+    const input = event.target as HTMLInputElement;
+    input.value = "";
   };
   useEffect(() => {
     if (error) {
