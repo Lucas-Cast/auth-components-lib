@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { store } from "../../../app/store";
+import { store } from "../../app/store";
 import { SigninForm } from "../SigninForm";
 import { SignupForm } from "../SignupForm";
 
