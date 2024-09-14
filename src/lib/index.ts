@@ -1,3 +1,3 @@
-export { SignupComponent } from "@components/BaseForm";
+export { SignupComponent } from "./components/BaseForm";
 
-export { SigninComponent } from "@components/BaseForm";
+export { SigninComponent } from "./components/BaseForm";

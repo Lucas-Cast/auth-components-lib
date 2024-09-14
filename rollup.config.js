@@ -1,41 +1,59 @@
 /* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import path from 'path'
+import path from 'path';
 
-import typescript from "@rollup/plugin-typescript";
-import resolve from "@rollup/plugin-node-resolve";
 import alias from '@rollup/plugin-alias';
 import commonjs from "@rollup/plugin-commonjs";
+import dts from "rollup-plugin-dts";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import resolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
+
 import * as pkg from "./package.json" with { type: "json" };
 
-export default {
-   input: "src/index.ts",
-   output: [
-    {
-      file: pkg.main,
-      format: "cjs",
-      sourceMap: true,
-      inlineDynamicImports: true,
-    },
-   ],
-   plugins: [
-    resolve(),
-    commonjs(),
-    peerDepsExternal(),
-    typescript({ 
-      tsconfig: './tsconfig.app.json',
-      declaration: true,
-      declarationDir: 'build',
-  }),
-  alias({
-    entries: [
-      {
-        find: "@components",
-        replacement: path.resolve(__dirname, "./src/lib/components"),
-      },
-    ]
-  }),
+export default [
   
-  ]
-};
+  {
+    input: "src/index.ts",
+    onwarn(warning, warn) {
+      if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+        return;
+      }
+      warn(warning);
+    },
+    output: [
+      {
+        file: pkg.main,
+        format: "cjs",
+        inlineDynamicImports: true,
+      },
+      {
+        file: pkg.module,
+        format: "esm",
+      },
+    ],
+    plugins: [
+      peerDepsExternal(),
+      resolve(),
+      commonjs(),
+      typescript({ 
+        tsconfig: './tsconfig.json',
+        declaration: true,
+        declarationDir: 'build/types',
+      }),
+      alias({
+        entries: [
+          {
+            find: "@components",
+            replacement: path.resolve(__dirname, "./src/lib/components"),
+          }
+        ]
+      }),
+    ],
+  },
+  {
+    input: "build/esm/types/index.d.ts",
+    output: [{ file: "build/index.d.ts", format: "esm" }],
+    plugins: [dts.default()],
+    external: [/\.css$/],
+  },
+];

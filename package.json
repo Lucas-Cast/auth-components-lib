@@ -2,9 +2,13 @@
   "name": "auth-components-lib",
   "private": false,
   "version": "1.0.0",
-  "main": "build/index.js",
+  "main": "build/cjs/index.ts",
+  "module": "build/esm/index.ts",
+  "files": [
+    "build"
+  ],
   "types": "build/index.d.ts",
-  "type": "module",
+  "typings": "build/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "rollup -c --bundleConfigAsCjs",
@@ -30,6 +34,7 @@
     "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@storybook/addon-essentials": "^8.2.5",
     "@storybook/addon-interactions": "^8.2.5",
@@ -49,7 +54,9 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "eslint-plugin-storybook": "^0.8.0",
     "rollup": "^4.21.2",
+    "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
     "storybook": "^8.2.5",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
